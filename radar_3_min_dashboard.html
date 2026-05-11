@@ -71,9 +71,9 @@
       line-height: 1;
     }
     .brand-name {
-      font-size: 1.75rem;
+      font-size: 1.2rem;
       font-weight: 700;
-      letter-spacing: -0.01em;
+      letter-spacing: 0.02em;
       line-height: 1;
     }
     .brand-bracket { color: var(--red);      font-weight: 700; }
@@ -584,7 +584,7 @@
 
   <!-- TOPBAR -->
   <header class="topbar">
-    <a class="brand-wrap" href="./index.html" aria-label="ROUS Digital Projects">
+    <a class="brand-wrap" href="./radar_3_min_dashboard.html" aria-label="ROUS Digital Projects">
       <span class="brand-name">
         <span class="brand-bracket">[</span><span class="brand-letter">R</span><span class="brand-bracket">]</span><span class="brand-ous">OUS</span>
       </span>
@@ -597,11 +597,11 @@
     </div>
 
     <div class="topbar-right">
-      <a class="back-link" href="./radar_3_min_landing_html_css.html">
+      <a class="back-link" href="./index.html">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
         Volver a la web
       </a>
-      <a class="btn-export" href="#">
+      <button class="btn-export" onclick="exportarCSV()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Exportar
       </a>
@@ -978,5 +978,28 @@
     </div>
   </main>
 </div>
+<script>
+function exportarCSV() {
+  const filas = [
+    ["Semana","Señales totales","Competidores","Tendencias","Clientes","Tecnología","Alertas críticas"],
+    ["Semana 1","142","38","45","31","28","3"],
+    ["Semana 2","138","42","39","29","28","2"],
+    ["Semana 3","155","50","44","33","28","4"],
+    ["Semana 4","149","45","48","30","26","2"],
+    ["Semana 5","162","48","50","35","29","5"],
+    ["Semana 6","158","52","46","32","28","3"],
+    ["Semana 7","171","55","51","36","29","6"],
+    ["Semana 8","165","50","53","33","29","4"],
+    ["Semana 9","168","58","48","31","31","7"],
+    ["Semana 10","160","52","49","30","29","5"],
+    ["Semana 11","150","47","44","32","27","5"],
+    ["Semana 12","137","41","42","28","26","6"],
+  ];
+  const csv = filas.map(f => f.map(c => `"${c}"`).join(";")).join("\n");
+  const blob = new Blob(["﻿" + csv], { type: "text/csv;charset=utf-8;" });
+  const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: "Radar3Min_datos.csv" });
+  a.click(); URL.revokeObjectURL(a.href);
+}
+</script>
 </body>
 </html>
