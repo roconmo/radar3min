@@ -99,11 +99,6 @@
       color: var(--sage-dark);
     }
 
-    /* on dark backgrounds keep brackets red, rest white */
-    .brand-light .brand-name   { color: white; }
-    .brand-light .brand-letter { color: var(--sage-dark); }
-    .brand-light .brand-ous    { color: var(--sage-dark); }
-    .brand-light .brand-sub    { color: rgba(255,255,255,0.6); }
 
     /* ── HEADER ── */
     header {
@@ -119,7 +114,8 @@
       align-items: center;
       justify-content: space-between;
       gap: 24px;
-      padding: 16px 0;
+      padding: 0;
+      height: 56px;
     }
 
     nav {
@@ -1100,30 +1096,13 @@
       .radar-scene { width: 280px; height: 280px; }
     }
   </style>
+  <link rel="stylesheet" href="./css/header.css">
 </head>
 <body>
 
 <!-- HEADER -->
-<header>
-  <div class="container header-inner">
-    <a class="brand-wrap brand-dark" href="#" aria-label="ROUS Digital Projects">
-      <span class="brand-name">
-        <span class="brand-bracket">[</span><span class="brand-letter">R</span><span class="brand-bracket">]</span><span class="brand-ous">OUS</span>
-      </span>
-      <span class="brand-sub">Digital Projects</span>
-    </a>
-
-    <nav>
-      <a href="#como-funciona">Cómo funciona</a>
-      <a href="#beneficios">Beneficios</a>
-      <a href="./radar_3_min_dashboard.html">Dashboard</a>
-      <a class="nav-cta" href="#demo">
-        Solicita una demo
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-      </a>
-    </nav>
-  </div>
-</header>
+<div id="site-header"></div>
+<script src="./js/header.js"></script>
 
 <!-- HERO -->
 <section class="hero" id="que-es">
@@ -1366,7 +1345,7 @@
   <div class="container how-layout">
     <div>
       <div class="tag">Proceso</div>
-      <h2 class="s-title">Así funciona<br>Radar3Min</h2>
+      <h2 class="s-title">Así funciona<br>Radar<span class="accent">3</span>Min</h2>
       <p class="s-sub">Un proceso sencillo, automatizado y calibrado para darte exactamente lo que necesitas cuando lo necesitas.</p>
 
       <div class="steps">
@@ -1484,7 +1463,7 @@
   <div class="container">
     <div class="tag">Beneficios</div>
     <h2 class="s-title">Tu ventaja competitiva,<br>cada semana</h2>
-    <p class="s-sub">Radar3Min no es un boletín más. Es inteligencia accionable diseñada para que tú ganes terreno.</p>
+    <p class="s-sub">Radar<span class="accent">3</span>Min no es un boletín más. Es inteligencia accionable diseñada para que tú ganes terreno.</p>
 
     <div class="benefits-grid">
       <article class="benefit fade">
@@ -1528,7 +1507,7 @@
     <div>
       <div class="cta-tag">Empieza hoy</div>
       <h2>Menos ruido.<br>Mejores decisiones.</h2>
-      <p>Radar3Min es tu ventaja competitiva, entregada cada semana.</p>
+      <p>Radar<span class="accent">3</span>Min es tu ventaja competitiva, entregada cada semana.</p>
     </div>
 
     <div class="cta-right">
@@ -1548,7 +1527,7 @@
     <div class="demo-left fade">
       <div class="tag">Solicita una demo</div>
       <h2>Cuéntanos tu proyecto.<br>Te respondemos en 24&nbsp;h.</h2>
-      <p>Sin compromiso. Analizamos tu sector, te mostramos un ejemplo real y juntos vemos si Radar3Min encaja contigo.</p>
+      <p>Sin compromiso. Analizamos tu sector, te mostramos un ejemplo real y juntos vemos si Radar<span class="accent">3</span>Min encaja contigo.</p>
 
       <div class="demo-perks">
         <div class="demo-perk">
