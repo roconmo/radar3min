@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard · Radar3Min</title>
+  <style>
+    :root {
+      --sage-dark:  #2c5f4a;
+      --sage:       #3d7a60;
+      --sage-mid:   #5a9478;
+      --sage-light: #8bb8a0;
+      --sage-pale:  #d4e8de;
+      --sage-ghost: #eaf3ee;
+      --red:        #c0392b;
+      --red-soft:   #e05a4e;
+      --amber:      #e07b2a;
+      --amber-pale: #fdf0e3;
+      --cream:      #faf7f2;
+      --cream2:     #f3ede3;
+      --cream3:     #ece5d8;
+      --ink:        #1a2e28;
+      --ink2:       #2e4a40;
+      --muted:      #6b7f78;
+      --muted2:     #8fa39b;
+      --line:       rgba(44,95,74,0.12);
+      --line2:      rgba(44,95,74,0.07);
+      --shadow-sm:  0 2px 10px rgba(28,50,42,0.07);
+      --shadow-md:  0 8px 28px rgba(28,50,42,0.10);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+      background: var(--cream2);
+      color: var(--ink);
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    /* ── LAYOUT ── */
+    .app {
+      display: grid;
+      grid-template-rows: 60px 1fr;
+      min-height: 100vh;
+    }
+
+    /* ── TOPBAR ── */
+    .topbar {
+      background: white;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 28px;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .brand-wrap {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-decoration: none;
+      line-height: 1;
+    }
+    .brand-name {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      line-height: 1;
+    }
+    .brand-bracket { color: var(--red);      font-weight: 700; }
+    .brand-letter  { color: var(--sage-dark); font-weight: 600; }
+    .brand-ous     { color: var(--sage-dark); font-weight: 700; }
+    .brand-sub {
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 2px;
+      margin-left: 2px;
+    }
+
+    .topbar-center {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--cream2);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+
+    .topbar-center svg { color: var(--sage-mid); }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .back-link {
+      font-size: 0.83rem;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.18s;
+    }
+
+    .back-link:hover { color: var(--ink); }
+
+    .btn-export {
+      background: var(--sage-dark);
+      color: white;
+      font-size: 0.83rem;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: background 0.18s;
+    }
+
+    .btn-export:hover { background: var(--sage); }
+
+    /* ── MAIN ── */
+    .main {
+      padding: 28px 28px 48px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      max-width: 1280px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .page-header h1 {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+
+    .page-header p {
+      font-size: 0.86rem;
+      color: var(--muted);
+    }
+
+    .range-tabs {
+      display: flex;
+      gap: 2px;
+      background: var(--cream3);
+      border-radius: 8px;
+      padding: 3px;
+    }
+
+    .range-tab {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--muted);
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .range-tab.active {
+      background: white;
+      color: var(--ink);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* ── KPI CARDS ── */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    .kpi {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 22px 22px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .kpi-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .kpi-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .kpi-ico {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+    }
+
+    .kpi-ico svg { width: 16px; height: 16px; stroke-width: 1.8; }
+    .kpi-ico.green { background: var(--sage-ghost); color: var(--sage-dark); }
+    .kpi-ico.red   { background: #fdecea; color: var(--red); }
+    .kpi-ico.amber { background: var(--amber-pale); color: var(--amber); }
+    .kpi-ico.blue  { background: #e8f0fb; color: #3b6fd4; }
+
+    .kpi-value {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.05em;
+      color: var(--ink);
+      line-height: 1;
+    }
+
+    .kpi-footer {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+    }
+
+    .kpi-delta {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 999px;
+    }
+
+    .kpi-delta.up   { background: var(--sage-ghost); color: var(--sage-dark); }
+    .kpi-delta.down { background: #fdecea; color: var(--red); }
+
+    .kpi-footer span { color: var(--muted2); }
+
+    /* ── GRID ── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    /* ── CARD BASE ── */
+    .card {
+      background: white;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      border-bottom: 1px solid var(--line2);
+    }
+
+    .card-title {
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: var(--ink);
+    }
+
+    .card-sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .card-badge {
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--sage-ghost);
+      color: var(--sage-dark);
+    }
+
+    /* ── LINE CHART ── */
+    .chart-wrap {
+      padding: 20px 22px 14px;
+    }
+
+    .chart-legend {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    .legend-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex: 0 0 10px;
+    }
+
+    .chart-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .chart-x-labels {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 8px 0;
+      font-size: 0.7rem;
+      color: var(--muted2);
+    }
+
+    /* ── SIGNAL LIST ── */
+    .signal-list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .signal-item {
+      display: flex;
+      gap: 14px;
+      padding: 14px 22px;
+      border-bottom: 1px solid var(--line2);
+      transition: background 0.15s;
+    }
+
+    .signal-item:last-child { border-bottom: 0; }
+    .signal-item:hover { background: var(--cream); }
+
+    .sig-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex: 0 0 8px;
+      margin-top: 5px;
+    }
+
+    .sig-category {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 3px;
+    }
+
+    .sig-title {
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--ink);
+      margin-bottom: 3px;
+      line-height: 1.35;
+    }
+
+    .sig-meta {
+      font-size: 0.74rem;
+      color: var(--muted2);
+    }
+
+    .sig-impact {
+      margin-left: auto;
+      flex: 0 0 auto;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 999px;
+      align-self: flex-start;
+      margin-top: 2px;
+    }
+
+    .sig-impact.alto  { background: #fdecea; color: var(--red); }
+    .sig-impact.medio { background: var(--amber-pale); color: var(--amber); }
+    .sig-impact.bajo  { background: var(--sage-ghost); color: var(--sage-dark); }
+
+    /* ── MINI BAR CHART ── */
+    .bar-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 18px 22px;
+    }
+
+    .bar-row {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .bar-header {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+    }
+
+    .bar-label { color: var(--ink); font-weight: 600; }
+    .bar-count { color: var(--muted); }
+
+    .bar-track {
+      height: 8px;
+      background: var(--cream3);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.6s ease;
+    }
+
+    /* ── HEATMAP ── */
+    .heatmap-wrap {
+      padding: 18px 22px;
+    }
+
+    .heatmap-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 5px;
+    }
+
+    .hm-col {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .hm-cell {
+      aspect-ratio: 1;
+      border-radius: 4px;
+    }
+
+    .hm-labels-x {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 5px;
+      margin-top: 6px;
+    }
+
+    .hm-lx {
+      font-size: 0.62rem;
+      color: var(--muted2);
+      text-align: center;
+    }
+
+    .hm-labels-y {
+      display: grid;
+      grid-template-rows: repeat(5, 1fr);
+      gap: 5px;
+      position: absolute;
+      left: -38px;
+      top: 0;
+      height: 100%;
+    }
+
+    .heatmap-outer {
+      position: relative;
+      padding-left: 40px;
+    }
+
+    .hm-ly {
+      font-size: 0.62rem;
+      color: var(--muted2);
+      display: flex;
+      align-items: center;
+    }
+
+    /* ── WEEK TABLE ── */
+    .week-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.83rem;
+    }
+
+    .week-table th {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--muted);
+      padding: 10px 22px;
+      text-align: left;
+      border-bottom: 1px solid var(--line2);
+      background: var(--cream);
+    }
+
+    .week-table td {
+      padding: 12px 22px;
+      border-bottom: 1px solid var(--line2);
+      color: var(--ink2);
+      vertical-align: middle;
+    }
+
+    .week-table tr:last-child td { border-bottom: 0; }
+    .week-table tr:hover td { background: var(--cream); }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 999px;
+    }
+
+    .pill.comp  { background: #e8f0fb; color: #3b6fd4; }
+    .pill.tend  { background: var(--sage-ghost); color: var(--sage-dark); }
+    .pill.clie  { background: var(--amber-pale); color: var(--amber); }
+    .pill.tech  { background: #f3e8fb; color: #7b4faa; }
+
+    .td-num { font-weight: 700; color: var(--ink); }
+
+    .trend-up   { color: var(--sage-dark); font-weight: 700; font-size: 0.78rem; }
+    .trend-down { color: var(--red); font-weight: 700; font-size: 0.78rem; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 1100px) {
+      .grid-2 { grid-template-columns: 1fr; }
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 720px) {
+      .main { padding: 16px 16px 40px; }
+      .grid-3 { grid-template-columns: 1fr; }
+      .kpi-row { grid-template-columns: 1fr 1fr; }
+      .topbar { padding: 0 16px; }
+      .topbar-center { display: none; }
+    }
+
+    @media (max-width: 480px) {
+      .kpi-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+<div class="app">
+
+  <!-- TOPBAR -->
+  <header class="topbar">
+    <a class="brand-wrap" href="./index.html" aria-label="ROUS Digital Projects">
+      <span class="brand-name">
+        <span class="brand-bracket">[</span><span class="brand-letter">R</span><span class="brand-bracket">]</span><span class="brand-ous">OUS</span>
+      </span>
+      <span class="brand-sub">Digital Projects</span>
+    </a>
+
+    <div class="topbar-center">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+      Datos históricos · Ene 2024 – Abr 2024
+    </div>
+
+    <div class="topbar-right">
+      <a class="back-link" href="./radar_3_min_landing_html_css.html">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+        Volver a la web
+      </a>
+      <a class="btn-export" href="#">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Exportar
+      </a>
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- PAGE HEADER -->
+    <div class="page-header">
+      <div>
+        <h1>Datos históricos</h1>
+        <p>Señales detectadas y analizadas por Radar3Min · Enero – Abril 2024</p>
+      </div>
+      <div class="range-tabs">
+        <div class="range-tab">4 sem</div>
+        <div class="range-tab">8 sem</div>
+        <div class="range-tab active">12 sem</div>
+        <div class="range-tab">6 meses</div>
+      </div>
+    </div>
+
+    <!-- KPI ROW -->
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="kpi-top">
+          <span class="kpi-label">Señales analizadas</span>
+          <div class="kpi-ico green">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
+          </div>
+        </div>
+        <div class="kpi-value">1 847</div>
+        <div class="kpi-footer">
+          <span class="kpi-delta up">↑ 18%</span>
+          <span>vs. periodo anterior</span>
+        </div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-top">
+          <span class="kpi-label">Alertas críticas</span>
+          <div class="kpi-ico red">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </div>
+        </div>
+        <div class="kpi-value">34</div>
+        <div class="kpi-footer">
+          <span class="kpi-delta down">↑ 6</span>
+          <span>vs. periodo anterior</span>
+        </div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-top">
+          <span class="kpi-label">Tendencias nuevas</span>
+          <div class="kpi-ico amber">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
+          </div>
+        </div>
+        <div class="kpi-value">12</div>
+        <div class="kpi-footer">
+          <span class="kpi-delta up">↑ 4</span>
+          <span>vs. periodo anterior</span>
+        </div>
+      </div>
+
+      <div class="kpi">
+        <div class="kpi-top">
+          <span class="kpi-label">Tiempo de lectura</span>
+          <div class="kpi-ico blue">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+          </div>
+        </div>
+        <div class="kpi-value">2.4<span style="font-size:1.1rem;font-weight:500;color:var(--muted)"> min</span></div>
+        <div class="kpi-footer">
+          <span class="kpi-delta up">↓ 0.3</span>
+          <span>más eficiente</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CHART + SIGNAL LIST -->
+    <div class="grid-2">
+
+      <!-- Line chart -->
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Señales detectadas por semana</div>
+            <div class="card-sub">Desglose por categoría · últimas 12 semanas</div>
+          </div>
+          <span class="card-badge">Semanal</span>
+        </div>
+        <div class="chart-wrap">
+          <div class="chart-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#3b6fd4"></div>Competidores</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#3d7a60"></div>Tendencias</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#e07b2a"></div>Clientes</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#7b4faa"></div>Tecnología</div>
+          </div>
+
+          <!-- SVG chart: viewBox 0 0 800 200, x: 40..760, y: 10..190, max val ~35 -->
+          <svg class="chart-svg" viewBox="0 0 800 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <!-- grid lines -->
+            <line x1="40" y1="10" x2="40" y2="190" stroke="#ece5d8" stroke-width="1"/>
+            <line x1="40" y1="190" x2="760" y2="190" stroke="#ece5d8" stroke-width="1"/>
+            <!-- y gridlines -->
+            <line x1="40" y1="143" x2="760" y2="143" stroke="#ece5d8" stroke-width="1" stroke-dasharray="4 4"/>
+            <line x1="40" y1="97"  x2="760" y2="97"  stroke="#ece5d8" stroke-width="1" stroke-dasharray="4 4"/>
+            <line x1="40" y1="50"  x2="760" y2="50"  stroke="#ece5d8" stroke-width="1" stroke-dasharray="4 4"/>
+            <!-- y labels -->
+            <text x="30" y="194" font-size="10" fill="#8fa39b" text-anchor="end">0</text>
+            <text x="30" y="147" font-size="10" fill="#8fa39b" text-anchor="end">10</text>
+            <text x="30" y="101" font-size="10" fill="#8fa39b" text-anchor="end">20</text>
+            <text x="30" y="54"  font-size="10" fill="#8fa39b" text-anchor="end">30</text>
+
+            <!-- Competidores: 12,15,11,18,22,19,24,28,23,26,31,29 -->
+            <!-- y = 190 - val*(180/35) -->
+            <!-- x step = 720/11 = 65.45, x0=40 -->
+            <defs>
+              <linearGradient id="gc" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#3b6fd4" stop-opacity="0.15"/>
+                <stop offset="100%" stop-color="#3b6fd4" stop-opacity="0"/>
+              </linearGradient>
+              <linearGradient id="gt" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#3d7a60" stop-opacity="0.12"/>
+                <stop offset="100%" stop-color="#3d7a60" stop-opacity="0"/>
+              </linearGradient>
+            </defs>
+
+            <!-- area fills -->
+            <path d="M40,128 L105,118 L171,133 L236,97 L302,75 L367,84 L432,59 L498,35 L563,52 L628,41 L694,18 L760,24 L760,190 L40,190Z" fill="url(#gc)" />
+            <path d="M40,149 L105,136 L171,118 L236,124 L302,105 L367,88 L432,97 L498,75 L563,61 L628,71 L694,47 L760,36 L760,190 L40,190Z" fill="url(#gt)" />
+
+            <!-- Competidores line -->
+            <polyline
+              points="40,128 105,118 171,133 236,97 302,75 367,84 432,59 498,35 563,52 628,41 694,18 760,24"
+              stroke="#3b6fd4" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"
+            />
+            <!-- Tendencias line -->
+            <polyline
+              points="40,149 105,136 171,118 236,124 302,105 367,88 432,97 498,75 563,61 628,71 694,47 760,36"
+              stroke="#3d7a60" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"
+            />
+            <!-- Clientes line -->
+            <polyline
+              points="40,164 105,155 171,148 236,151 302,143 367,146 432,138 498,141 563,134 628,136 694,129 760,132"
+              stroke="#e07b2a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 3"
+            />
+            <!-- Tecnología line -->
+            <polyline
+              points="40,161 105,150 171,154 236,139 302,144 367,131 432,135 498,121 563,126 628,113 694,108 760,101"
+              stroke="#7b4faa" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" stroke-dasharray="6 3"
+            />
+
+            <!-- dots on Competidores -->
+            <circle cx="40"  cy="128" r="3.5" fill="white" stroke="#3b6fd4" stroke-width="2"/>
+            <circle cx="498" cy="35"  r="4.5" fill="#3b6fd4" stroke="white" stroke-width="2"/>
+            <circle cx="760" cy="24"  r="3.5" fill="white" stroke="#3b6fd4" stroke-width="2"/>
+            <!-- dots on Tendencias -->
+            <circle cx="40"  cy="149" r="3.5" fill="white" stroke="#3d7a60" stroke-width="2"/>
+            <circle cx="694" cy="47"  r="4.5" fill="#3d7a60" stroke="white" stroke-width="2"/>
+            <circle cx="760" cy="36"  r="3.5" fill="white" stroke="#3d7a60" stroke-width="2"/>
+          </svg>
+
+          <div class="chart-x-labels">
+            <span>Sem 1</span><span>Sem 2</span><span>Sem 3</span><span>Sem 4</span>
+            <span>Sem 5</span><span>Sem 6</span><span>Sem 7</span><span>Sem 8</span>
+            <span>Sem 9</span><span>Sem 10</span><span>Sem 11</span><span>Sem 12</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Signal list -->
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Señales recientes</div>
+            <div class="card-sub">Última semana · ordenadas por impacto</div>
+          </div>
+          <span class="card-badge">7 nuevas</span>
+        </div>
+        <div class="signal-list">
+          <div class="signal-item">
+            <div class="sig-dot" style="background:var(--red)"></div>
+            <div style="flex:1">
+              <div class="sig-category" style="color:var(--red)">Competidores</div>
+              <div class="sig-title">Empresa X lanza funcionalidad similar a precio reducido</div>
+              <div class="sig-meta">Hace 2 días · Fuente: prensa sectorial</div>
+            </div>
+            <span class="sig-impact alto">Alto</span>
+          </div>
+
+          <div class="signal-item">
+            <div class="sig-dot" style="background:#3d7a60"></div>
+            <div style="flex:1">
+              <div class="sig-category" style="color:#3d7a60">Tendencias</div>
+              <div class="sig-title">IA generativa adopción +34% en sector B2B según informe Gartner</div>
+              <div class="sig-meta">Hace 3 días · Fuente: Gartner</div>
+            </div>
+            <span class="sig-impact medio">Medio</span>
+          </div>
+
+          <div class="signal-item">
+            <div class="sig-dot" style="background:#e07b2a"></div>
+            <div style="flex:1">
+              <div class="sig-category" style="color:#e07b2a">Clientes</div>
+              <div class="sig-title">Aumento en búsquedas de "alternativas a [solución actual]"</div>
+              <div class="sig-meta">Hace 4 días · Fuente: Google Trends</div>
+            </div>
+            <span class="sig-impact medio">Medio</span>
+          </div>
+
+          <div class="signal-item">
+            <div class="sig-dot" style="background:#7b4faa"></div>
+            <div style="flex:1">
+              <div class="sig-category" style="color:#7b4faa">Tecnología</div>
+              <div class="sig-title">Nueva API de automatización disponible en fase beta pública</div>
+              <div class="sig-meta">Hace 5 días · Fuente: GitHub / TechCrunch</div>
+            </div>
+            <span class="sig-impact bajo">Bajo</span>
+          </div>
+
+          <div class="signal-item">
+            <div class="sig-dot" style="background:var(--red)"></div>
+            <div style="flex:1">
+              <div class="sig-category" style="color:var(--red)">Competidores</div>
+              <div class="sig-title">Ronda de financiación Serie B de competidor directo: 12M€</div>
+              <div class="sig-meta">Hace 6 días · Fuente: Crunchbase</div>
+            </div>
+            <span class="sig-impact alto">Alto</span>
+          </div>
+
+          <div class="signal-item">
+            <div class="sig-dot" style="background:#3d7a60"></div>
+            <div style="flex:1">
+              <div class="sig-category" style="color:#3d7a60">Tendencias</div>
+              <div class="sig-title">Regulación europea sobre datos en el sector avanza en el parlamento</div>
+              <div class="sig-meta">Hace 7 días · Fuente: EUR-Lex</div>
+            </div>
+            <span class="sig-impact medio">Medio</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BOTTOM GRID -->
+    <div class="grid-3">
+
+      <!-- Bar chart por categoría -->
+      <div class="card">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Señales por categoría</div>
+            <div class="card-sub">Acumulado 12 semanas</div>
+          </div>
+        </div>
+        <div class="bar-list">
+          <div class="bar-row">
+            <div class="bar-header">
+              <span class="bar-label">Competidores</span>
+              <span class="bar-count">548 señales</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:100%;background:#3b6fd4"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-header">
+              <span class="bar-label">Tendencias</span>
+              <span class="bar-count">487 señales</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:89%;background:#3d7a60"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-header">
+              <span class="bar-label">Tecnología</span>
+              <span class="bar-count">432 señales</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:79%;background:#7b4faa"></div>
+            </div>
+          </div>
+
+          <div class="bar-row">
+            <div class="bar-header">
+              <span class="bar-label">Clientes</span>
+              <span class="bar-count">380 señales</span>
+            </div>
+            <div class="bar-track">
+              <div class="bar-fill" style="width:69%;background:#e07b2a"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Weekly summary table -->
+      <div class="card" style="grid-column: span 2;">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Resumen por semana</div>
+            <div class="card-sub">Señales totales, alertas y tendencia</div>
+          </div>
+        </div>
+        <table class="week-table">
+          <thead>
+            <tr>
+              <th>Semana</th>
+              <th>Periodo</th>
+              <th>Total señales</th>
+              <th>Alertas</th>
+              <th>Categoría líder</th>
+              <th>Tendencia</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="td-num">Sem 12</td>
+              <td>22–26 Abr</td>
+              <td class="td-num">168</td>
+              <td class="td-num" style="color:var(--red)">7</td>
+              <td><span class="pill comp">Competidores</span></td>
+              <td class="trend-up">↑ 12%</td>
+            </tr>
+            <tr>
+              <td class="td-num">Sem 11</td>
+              <td>15–19 Abr</td>
+              <td class="td-num">150</td>
+              <td class="td-num" style="color:var(--red)">5</td>
+              <td><span class="pill tend">Tendencias</span></td>
+              <td class="trend-up">↑ 8%</td>
+            </tr>
+            <tr>
+              <td class="td-num">Sem 10</td>
+              <td>8–12 Abr</td>
+              <td class="td-num">139</td>
+              <td class="td-num" style="color:var(--amber)">3</td>
+              <td><span class="pill comp">Competidores</span></td>
+              <td class="trend-down">↓ 4%</td>
+            </tr>
+            <tr>
+              <td class="td-num">Sem 9</td>
+              <td>1–5 Abr</td>
+              <td class="td-num">145</td>
+              <td class="td-num" style="color:var(--amber)">4</td>
+              <td><span class="pill tech">Tecnología</span></td>
+              <td class="trend-up">↑ 6%</td>
+            </tr>
+            <tr>
+              <td class="td-num">Sem 8</td>
+              <td>25–29 Mar</td>
+              <td class="td-num">137</td>
+              <td class="td-num" style="color:var(--red)">6</td>
+              <td><span class="pill comp">Competidores</span></td>
+              <td class="trend-up">↑ 14%</td>
+            </tr>
+            <tr>
+              <td class="td-num">Sem 7</td>
+              <td>18–22 Mar</td>
+              <td class="td-num">120</td>
+              <td class="td-num" style="color:var(--amber)">2</td>
+              <td><span class="pill tend">Tendencias</span></td>
+              <td class="trend-down">↓ 2%</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </main>
+</div>
+</body>
+</html>
