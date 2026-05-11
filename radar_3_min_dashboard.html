@@ -205,6 +205,48 @@
       box-shadow: var(--shadow-sm);
     }
 
+    /* ── SECTOR SELECTOR ── */
+    .sector-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .sector-label {
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+    }
+
+    .sector-btn {
+      background: white;
+      border: 1.5px solid var(--line);
+      border-radius: 40px;
+      padding: 7px 16px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.18s;
+      font-family: inherit;
+    }
+
+    .sector-btn:hover {
+      border-color: var(--sage-dark);
+      color: var(--sage-dark);
+    }
+
+    .sector-btn.active {
+      background: var(--sage-dark);
+      border-color: var(--sage-dark);
+      color: white;
+      font-weight: 600;
+    }
+
     /* ── KPI CARDS ── */
     .kpi-row {
       display: grid;
@@ -619,61 +661,70 @@
       </div>
     </div>
 
+    <!-- SECTOR SELECTOR -->
+    <div class="sector-selector">
+      <span class="sector-label">Sector:</span>
+      <button class="sector-btn active" data-sector="inmobiliaria">🏠 Inmobiliarias</button>
+      <button class="sector-btn" data-sector="retail">🛍️ Retail</button>
+      <button class="sector-btn" data-sector="restauracion">🍽️ Restauración</button>
+      <button class="sector-btn" data-sector="clinicas">🏥 Clínicas</button>
+    </div>
+
     <!-- KPI ROW -->
     <div class="kpi-row">
       <div class="kpi">
         <div class="kpi-top">
-          <span class="kpi-label">Señales analizadas</span>
+          <span class="kpi-label" id="kpi-label-0">Señales analizadas</span>
           <div class="kpi-ico green">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4"/></svg>
           </div>
         </div>
-        <div class="kpi-value">1 847</div>
+        <div class="kpi-value" id="kpi-value-0">1.847</div>
         <div class="kpi-footer">
-          <span class="kpi-delta up">↑ 18%</span>
-          <span>vs. periodo anterior</span>
+          <span class="kpi-delta up" id="kpi-delta-0">↑ 18%</span>
+          <span id="kpi-delta-text-0">vs. periodo anterior</span>
         </div>
       </div>
 
       <div class="kpi">
         <div class="kpi-top">
-          <span class="kpi-label">Alertas críticas</span>
+          <span class="kpi-label" id="kpi-label-1">Alertas críticas</span>
           <div class="kpi-ico red">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
           </div>
         </div>
-        <div class="kpi-value">34</div>
+        <div class="kpi-value" id="kpi-value-1">34</div>
         <div class="kpi-footer">
-          <span class="kpi-delta down">↑ 6</span>
-          <span>vs. periodo anterior</span>
+          <span class="kpi-delta down" id="kpi-delta-1">↑ 6</span>
+          <span id="kpi-delta-text-1">vs. periodo anterior</span>
         </div>
       </div>
 
       <div class="kpi">
         <div class="kpi-top">
-          <span class="kpi-label">Tendencias nuevas</span>
+          <span class="kpi-label" id="kpi-label-2">Tendencias nuevas</span>
           <div class="kpi-ico amber">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
           </div>
         </div>
-        <div class="kpi-value">12</div>
+        <div class="kpi-value" id="kpi-value-2">12</div>
         <div class="kpi-footer">
-          <span class="kpi-delta up">↑ 4</span>
-          <span>vs. periodo anterior</span>
+          <span class="kpi-delta up" id="kpi-delta-2">↑ 4</span>
+          <span id="kpi-delta-text-2">vs. periodo anterior</span>
         </div>
       </div>
 
       <div class="kpi">
         <div class="kpi-top">
-          <span class="kpi-label">Tiempo de lectura</span>
+          <span class="kpi-label" id="kpi-label-3">Tiempo de lectura</span>
           <div class="kpi-ico blue">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
           </div>
         </div>
-        <div class="kpi-value">2.4<span style="font-size:1.1rem;font-weight:500;color:var(--muted)"> min</span></div>
+        <div class="kpi-value" id="kpi-value-3">2.4 <span style="font-size:1.1rem;font-weight:500;color:var(--muted)">min</span></div>
         <div class="kpi-footer">
-          <span class="kpi-delta up">↓ 0.3</span>
-          <span>más eficiente</span>
+          <span class="kpi-delta up" id="kpi-delta-3">↓ 0.3</span>
+          <span id="kpi-delta-text-3">más eficiente</span>
         </div>
       </div>
     </div>
@@ -777,9 +828,9 @@
             <div class="card-title">Señales recientes</div>
             <div class="card-sub">Última semana · ordenadas por impacto</div>
           </div>
-          <span class="card-badge">7 nuevas</span>
+          <span class="card-badge" id="signal-badge">7 nuevas</span>
         </div>
-        <div class="signal-list">
+        <div class="signal-list" id="signal-list">
           <div class="signal-item">
             <div class="sig-dot" style="background:var(--red)"></div>
             <div style="flex:1">
@@ -994,6 +1045,119 @@ function exportarCSV() {
   const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: "Radar3Min_datos.csv" });
   a.click(); URL.revokeObjectURL(a.href);
 }
+
+// ── SECTOR SELECTOR ──
+const SECTORES = {
+  inmobiliaria: {
+    kpis: [
+      { label: 'Operaciones analizadas', value: '1.243', delta: '↑ 22%', deltaText: 'vs. periodo anterior', trend: 'up' },
+      { label: 'Alertas regulatorias',   value: '8',     delta: '↑ 3',   deltaText: 'vs. periodo anterior', trend: 'down' },
+      { label: 'Cambios de precio',      value: '24',    delta: '↑ 6',   deltaText: 'vs. periodo anterior', trend: 'up' },
+      { label: 'Tiempo de lectura',      value: '2.8 min', delta: '↓ 0.2', deltaText: 'más eficiente',    trend: 'up' }
+    ],
+    badge: '6 nuevas',
+    señales: [
+      { cat: 'Mercado',      color: '#3b6fd4',        title: 'Euríbor baja por 3er mes: mejora el acceso a hipotecas',               meta: 'Hace 1 día · Banco de España',          impacto: 'alto' },
+      { cat: 'Competidores', color: 'var(--red)',      title: 'Agencia rival abre 2ª oficina en tu zona con comisiones reducidas',     meta: 'Hace 3 días · Registros mercantiles',   impacto: 'alto' },
+      { cat: 'Regulación',   color: '#3d7a60',        title: 'Nueva limitación de alquiler en Madrid entra en vigor en julio',        meta: 'Hace 4 días · BOE',                     impacto: 'medio' },
+      { cat: 'Tendencias',   color: '#e07b2a',        title: 'Demanda de vivienda en periferia urbana sube un 18% este trimestre',    meta: 'Hace 5 días · Idealista Research',      impacto: 'medio' },
+      { cat: 'Mercado',      color: '#3b6fd4',        title: 'Stock de vivienda nueva cae a mínimos históricos en 6 ciudades',        meta: 'Hace 6 días · Ministerio de Vivienda',  impacto: 'alto' },
+      { cat: 'Clientes',     color: '#7b4faa',        title: 'Búsquedas de "comprar piso" suben un 31% respecto al año anterior',     meta: 'Hace 7 días · Google Trends',           impacto: 'medio' }
+    ]
+  },
+  retail: {
+    kpis: [
+      { label: 'Señales analizadas', value: '2.104', delta: '↑ 15%', deltaText: 'vs. periodo anterior', trend: 'up' },
+      { label: 'Alertas críticas',   value: '19',    delta: '↑ 5',   deltaText: 'vs. periodo anterior', trend: 'down' },
+      { label: 'Tendencias nuevas',  value: '15',    delta: '↑ 6',   deltaText: 'vs. periodo anterior', trend: 'up' },
+      { label: 'Tiempo de lectura',  value: '2.1 min', delta: '↓ 0.4', deltaText: 'más eficiente',    trend: 'up' }
+    ],
+    badge: '7 nuevas',
+    señales: [
+      { cat: 'Competidores', color: 'var(--red)', title: 'Amazon lanza categoría que compite directamente con tu producto estrella',   meta: 'Hace 2 días · Amazon.es',         impacto: 'alto' },
+      { cat: 'Consumidor',   color: '#e07b2a',    title: 'Consumidores priorizan marcas sostenibles: +34% en intención de compra',    meta: 'Hace 3 días · Nielsen',           impacto: 'medio' },
+      { cat: 'Regulación',   color: '#3d7a60',    title: 'Nueva normativa de devoluciones online: cambios obligatorios en sept.',     meta: 'Hace 4 días · BOE / EUR-Lex',     impacto: 'alto' },
+      { cat: 'Precios',      color: '#3b6fd4',    title: 'Ticket medio cae un 8% en tu segmento de precio este mes',                  meta: 'Hace 5 días · Kantar Worldpanel', impacto: 'medio' },
+      { cat: 'Competidores', color: 'var(--red)', title: 'Competidor abre flagship store en el centro comercial de referencia',        meta: 'Hace 7 días · Prensa local',      impacto: 'alto' }
+    ]
+  },
+  restauracion: {
+    kpis: [
+      { label: 'Señales analizadas', value: '892',  delta: '↑ 11%', deltaText: 'vs. periodo anterior', trend: 'up' },
+      { label: 'Alertas críticas',   value: '11',   delta: '↑ 2',   deltaText: 'vs. periodo anterior', trend: 'down' },
+      { label: 'Tendencias nuevas',  value: '9',    delta: '↑ 3',   deltaText: 'vs. periodo anterior', trend: 'up' },
+      { label: 'Tiempo de lectura',  value: '1.9 min', delta: '↓ 0.3', deltaText: 'más eficiente',   trend: 'up' }
+    ],
+    badge: '5 nuevas',
+    señales: [
+      { cat: 'Competidores', color: 'var(--red)', title: 'Nueva cadena abre local a 300m con precios un 15% menores',                meta: 'Hace 1 día · Registros mercantiles', impacto: 'alto' },
+      { cat: 'Tendencias',   color: '#3d7a60',    title: 'Búsquedas de menús plant-based en tu zona: +41% este mes',                meta: 'Hace 3 días · Google Trends',        impacto: 'medio' },
+      { cat: 'Regulación',   color: '#e07b2a',    title: 'Cambios obligatorios en etiquetado de alérgenos desde enero 2025',         meta: 'Hace 4 días · AESAN / BOE',          impacto: 'alto' },
+      { cat: 'Clientes',     color: '#3b6fd4',    title: 'El 58% de reservas ya son online: el walk-in cae por primera vez',         meta: 'Hace 5 días · TheFork',              impacto: 'medio' },
+      { cat: 'Tendencias',   color: '#3d7a60',    title: 'Delivery crece un 27%: plataformas aumentan comisión al 32%',              meta: 'Hace 6 días · Glovo / Uber Eats',    impacto: 'alto' }
+    ]
+  },
+  clinicas: {
+    kpis: [
+      { label: 'Señales analizadas',  value: '1.156', delta: '↑ 19%', deltaText: 'vs. periodo anterior', trend: 'up' },
+      { label: 'Alertas regulatorias', value: '14',   delta: '↑ 4',   deltaText: 'vs. periodo anterior', trend: 'down' },
+      { label: 'Tendencias nuevas',   value: '11',    delta: '↑ 5',   deltaText: 'vs. periodo anterior', trend: 'up' },
+      { label: 'Tiempo de lectura',   value: '2.3 min', delta: '↓ 0.2', deltaText: 'más eficiente',    trend: 'up' }
+    ],
+    badge: '6 nuevas',
+    señales: [
+      { cat: 'Competidores', color: 'var(--red)', title: 'Nueva clínica abre a 500m con precios de captación agresivos en estética', meta: 'Hace 2 días · Registros mercantiles',    impacto: 'alto' },
+      { cat: 'Regulación',   color: '#e07b2a',    title: 'Nuevos requisitos legales para tratamientos estéticos no invasivos',       meta: 'Hace 3 días · BOE / Ministerio Sanidad', impacto: 'alto' },
+      { cat: 'Tendencias',   color: '#3d7a60',    title: 'Medicina preventiva: +56% en consultas online últimos 3 meses',           meta: 'Hace 4 días · Google Health',            impacto: 'medio' },
+      { cat: 'Pacientes',    color: '#3b6fd4',    title: 'El 74% de pacientes elige clínica por reseñas en Google',                 meta: 'Hace 5 días · PatientView 2024',         impacto: 'medio' },
+      { cat: 'Tecnología',   color: '#7b4faa',    title: 'IA diagnóstica aprobada para uso clínico en dermatología y oftalmología', meta: 'Hace 7 días · AEMPS',                    impacto: 'medio' }
+    ]
+  }
+};
+
+function activarSector(sector) {
+  const data = SECTORES[sector];
+
+  // KPIs
+  data.kpis.forEach(function(kpi, i) {
+    document.getElementById('kpi-label-' + i).textContent = kpi.label;
+    document.getElementById('kpi-value-' + i).textContent = kpi.value;
+    var delta = document.getElementById('kpi-delta-' + i);
+    delta.textContent = kpi.delta;
+    delta.className = 'kpi-delta ' + kpi.trend;
+    document.getElementById('kpi-delta-text-' + i).textContent = kpi.deltaText;
+  });
+
+  // Badge señales
+  document.getElementById('signal-badge').textContent = data.badge;
+
+  // Señales
+  var impactoLabel = { alto: 'Alto', medio: 'Medio', bajo: 'Bajo' };
+  document.getElementById('signal-list').innerHTML = data.señales.map(function(s) {
+    return '<div class="signal-item">' +
+      '<div class="sig-dot" style="background:' + s.color + '"></div>' +
+      '<div style="flex:1">' +
+        '<div class="sig-category" style="color:' + s.color + '">' + s.cat + '</div>' +
+        '<div class="sig-title">' + s.title + '</div>' +
+        '<div class="sig-meta">' + s.meta + '</div>' +
+      '</div>' +
+      '<span class="sig-impact ' + s.impacto + '">' + impactoLabel[s.impacto] + '</span>' +
+    '</div>';
+  }).join('');
+
+  // Botones activos
+  document.querySelectorAll('.sector-btn').forEach(function(btn) {
+    btn.classList.toggle('active', btn.dataset.sector === sector);
+  });
+}
+
+// Eventos
+document.querySelectorAll('.sector-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() { activarSector(btn.dataset.sector); });
+});
+
+// Inicializar
+activarSector('inmobiliaria');
 </script>
 </body>
 </html>

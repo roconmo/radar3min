@@ -705,6 +705,40 @@
 
     .rc-btn:hover { background: var(--sage); }
 
+    /* ── SECTOR SELECTOR ── */
+    .sector-selector {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 32px;
+    }
+
+    .sector-btn {
+      background: white;
+      border: 1.5px solid var(--line);
+      border-radius: 40px;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+    }
+
+    .sector-btn:hover {
+      border-color: var(--sage-dark);
+      color: var(--sage-dark);
+    }
+
+    .sector-btn.active {
+      background: var(--sage-dark);
+      border-color: var(--sage-dark);
+      color: white;
+      font-weight: 600;
+    }
+
     /* ── BENEFITS ── */
     .benefits-grid {
       display: grid;
@@ -1411,45 +1445,10 @@
         <div class="rc-title">Radar<span class="accent">3</span>Min</div>
         <span class="rc-date">Resumen semanal · 22–26 abril 2024</span>
 
-        <div class="rc-row">
-          <div class="rc-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2l3 7 7 3-7 3-3 7-3-7-7-3 7-3 3-7z"/></svg>
-          </div>
-          <div>
-            <div class="rc-lbl">Señales clave</div>
-            <div class="rc-desc">4 insights principales que debes conocer.</div>
-          </div>
-        </div>
-
-        <div class="rc-row">
-          <div class="rc-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 17l6-6 4 4 8-8"/><path d="M14 7h7v7"/></svg>
-          </div>
-          <div>
-            <div class="rc-lbl">Análisis</div>
-            <div class="rc-desc">Qué significan y por qué importan.</div>
-          </div>
-        </div>
-
-        <div class="rc-row">
-          <div class="rc-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M6 3h12v18H6z"/><path d="M9 7h6M9 11h6M9 15h3"/></svg>
-          </div>
-          <div>
-            <div class="rc-lbl">Implicaciones</div>
-            <div class="rc-desc">Cómo pueden afectar a tu negocio.</div>
-          </div>
-        </div>
-
-        <div class="rc-row">
-          <div class="rc-ico">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M9 18h6M10 22h4M8 14a6 6 0 1 1 8 0c-1 1-1.5 2-1.5 3h-5c0-1-.5-2-1.5-3z"/></svg>
-          </div>
-          <div>
-            <div class="rc-lbl">Acciones recomendadas</div>
-            <div class="rc-desc">Qué deberías hacer esta semana.</div>
-          </div>
-        </div>
+        <div class="rc-row"><div class="rc-ico" id="rc-ico-0"></div><div><div class="rc-lbl" id="rc-lbl-0"></div><div class="rc-desc" id="rc-desc-0"></div></div></div>
+        <div class="rc-row"><div class="rc-ico" id="rc-ico-1"></div><div><div class="rc-lbl" id="rc-lbl-1"></div><div class="rc-desc" id="rc-desc-1"></div></div></div>
+        <div class="rc-row"><div class="rc-ico" id="rc-ico-2"></div><div><div class="rc-lbl" id="rc-lbl-2"></div><div class="rc-desc" id="rc-desc-2"></div></div></div>
+        <div class="rc-row"><div class="rc-ico" id="rc-ico-3"></div><div><div class="rc-lbl" id="rc-lbl-3"></div><div class="rc-desc" id="rc-desc-3"></div></div></div>
 
         <a class="rc-btn" href="./radar_3_min_dashboard.html">Ver datos históricos →</a>
       </div>
@@ -1629,6 +1628,66 @@
     { threshold: 0.12 }
   );
   document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+
+  // ── SECTOR SELECTOR ──
+  const sectores = {
+    inmobiliaria: {
+      badge: 'Inmobiliarias',
+      señales: [
+        { ico: '📉', lbl: 'Mercado', desc: 'El Euríbor baja por 3er mes consecutivo: mejora el acceso a hipotecas.' },
+        { ico: '🏢', lbl: 'Competidores', desc: 'Agencia rival abre 2ª oficina en tu zona con comisiones reducidas.' },
+        { ico: '📋', lbl: 'Regulación', desc: 'Nueva limitación de alquiler en Madrid entra en vigor en julio.' },
+        { ico: '📍', lbl: 'Tendencias', desc: 'Demanda de vivienda en periferia urbana sube un 18% este trimestre.' }
+      ]
+    },
+    retail: {
+      badge: 'Retail',
+      señales: [
+        { ico: '🛒', lbl: 'Competidores', desc: 'Amazon lanza categoría que compite directamente con tu producto estrella.' },
+        { ico: '🌱', lbl: 'Tendencias', desc: 'Consumidores priorizan marcas sostenibles: +34% en intención de compra.' },
+        { ico: '📋', lbl: 'Regulación', desc: 'Nueva normativa de devoluciones online obliga a cambios en tu política.' },
+        { ico: '💸', lbl: 'Clientes', desc: 'Ticket medio cae un 8% en tu segmento de precio este mes.' }
+      ]
+    },
+    restauracion: {
+      badge: 'Restauración',
+      señales: [
+        { ico: '🍽️', lbl: 'Competidores', desc: 'Nueva cadena abre local a 300m con oferta similar y precios un 15% menores.' },
+        { ico: '🥗', lbl: 'Tendencias', desc: 'Búsquedas de menús plant-based en tu zona han subido un 41% este mes.' },
+        { ico: '📋', lbl: 'Regulación', desc: 'Cambios obligatorios en etiquetado de alérgenos desde enero 2025.' },
+        { ico: '📱', lbl: 'Clientes', desc: 'Las reservas online superan ya al walk-in: el 58% reserva con al menos 2 días.' }
+      ]
+    },
+    clinicas: {
+      badge: 'Clínicas',
+      señales: [
+        { ico: '🏥', lbl: 'Competidores', desc: 'Nueva clínica abre a 500m con precios de captación agresivos en estética.' },
+        { ico: '📋', lbl: 'Regulación', desc: 'Cambios en prescripción de tratamientos estéticos: nuevos requisitos legales.' },
+        { ico: '🧬', lbl: 'Tendencias', desc: 'Medicina preventiva: +56% en consultas online en los últimos 3 meses.' },
+        { ico: '⭐', lbl: 'Clientes', desc: 'El 74% de pacientes elige clínica basándose en reseñas de Google.' }
+      ]
+    }
+  };
+
+  function activarSector(sector) {
+    const data = sectores[sector];
+    document.getElementById('rc-sector-badge').textContent = data.badge;
+    data.señales.forEach((s, i) => {
+      document.getElementById('rc-ico-' + i).textContent = s.ico;
+      document.getElementById('rc-lbl-' + i).textContent = s.lbl;
+      document.getElementById('rc-desc-' + i).textContent = s.desc;
+    });
+    document.querySelectorAll('.sector-btn').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.sector === sector);
+    });
+  }
+
+  document.querySelectorAll('.sector-btn').forEach(btn => {
+    btn.addEventListener('click', () => activarSector(btn.dataset.sector));
+  });
+
+  // inicializar con el primer sector
+  activarSector('inmobiliaria');
 
   // ── ANTI-BOT: tiempo mínimo de 3 segundos en la página ──
   const formLoadTime = Date.now();
