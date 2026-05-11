@@ -1558,11 +1558,13 @@
     </div>
 
     <div class="demo-form fade d1">
-      <form action="https://formsubmit.co/info@rosaliacontrerasmoreira.com" method="POST">
+      <form id="demo-form" action="https://formsubmit.co/info@rosaliacontrerasmoreira.com" method="POST">
         <!-- formsubmit config -->
         <input type="hidden" name="_subject"  value="Nueva solicitud de demo · Radar3Min">
         <input type="hidden" name="_captcha"  value="false">
         <input type="hidden" name="_template" value="table">
+        <!-- honeypot: los bots rellenan esto, los humanos no lo ven -->
+        <input type="text" name="_honey" style="display:none" tabindex="-1" autocomplete="off">
         <input type="hidden" name="_next"     value="https://radar.rosaliacontrerasmoreira.com/gracias.html">
 
         <div class="form-row">
@@ -1627,6 +1629,16 @@
     { threshold: 0.12 }
   );
   document.querySelectorAll('.fade').forEach(el => obs.observe(el));
+
+  // ── ANTI-BOT: tiempo mínimo de 3 segundos en la página ──
+  const formLoadTime = Date.now();
+  document.getElementById('demo-form').addEventListener('submit', function(e) {
+    const elapsed = Date.now() - formLoadTime;
+    if (elapsed < 3000) {
+      e.preventDefault();
+      return false; // bot detectado: envío demasiado rápido
+    }
+  });
 </script>
 </body>
 </html>
