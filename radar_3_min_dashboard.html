@@ -668,6 +668,7 @@
       <button class="sector-btn" data-sector="retail">🛍️ Retail</button>
       <button class="sector-btn" data-sector="restauracion">🍽️ Restauración</button>
       <button class="sector-btn" data-sector="clinicas">🏥 Clínicas</button>
+<button class="sector-btn" data-sector="eventos">🎉 Eventos</button>
     </div>
 
     <!-- KPI ROW -->
@@ -1111,6 +1112,23 @@ const SECTORES = {
       { cat: 'Tendencias',   color: '#3d7a60',    title: 'Medicina preventiva: +56% en consultas online últimos 3 meses',           meta: 'Hace 4 días · Google Health',            impacto: 'medio' },
       { cat: 'Pacientes',    color: '#3b6fd4',    title: 'El 74% de pacientes elige clínica por reseñas en Google',                 meta: 'Hace 5 días · PatientView 2024',         impacto: 'medio' },
       { cat: 'Tecnología',   color: '#7b4faa',    title: 'IA diagnóstica aprobada para uso clínico en dermatología y oftalmología', meta: 'Hace 7 días · AEMPS',                    impacto: 'medio' }
+    ]
+  },
+  eventos: {
+    kpis: [
+      { label: 'Señales analizadas', value: '978',  delta: '↑ 14%', deltaText: 'vs. periodo anterior', trend: 'up' },
+      { label: 'Alertas críticas',   value: '9',    delta: '↑ 2',   deltaText: 'vs. periodo anterior', trend: 'down' },
+      { label: 'Tendencias nuevas',  value: '12',   delta: '↑ 4',   deltaText: 'vs. periodo anterior', trend: 'up' },
+      { label: 'Tiempo de lectura',  value: '2.0 min', delta: '↓ 0.3', deltaText: 'más eficiente',   trend: 'up' }
+    ],
+    badge: '6 nuevas',
+    señales: [
+      { cat: 'Competidores', color: 'var(--red)', title: 'Nuevo espacio para eventos abre en tu zona con tarifas de lanzamiento un 20% más bajas', meta: 'Hace 1 día · Prensa local',              impacto: 'alto' },
+      { cat: 'Demanda',      color: '#3b6fd4',    title: 'Las búsquedas de "finca para bodas" suben un 26% de cara a la próxima temporada',     meta: 'Hace 2 días · Google Trends',            impacto: 'medio' },
+      { cat: 'Regulación',   color: '#e07b2a',    title: 'Nueva ordenanza municipal limita el ruido en eventos al aire libre desde las 23:00',    meta: 'Hace 3 días · Boletín municipal',        impacto: 'alto' },
+      { cat: 'Tendencias',   color: '#3d7a60',    title: 'Las empresas vuelven a los eventos presenciales: +18% en congresos y convenciones',    meta: 'Hace 4 días · Prensa sectorial',         impacto: 'medio' },
+      { cat: 'Proveedores',  color: '#7b4faa',    title: 'Catering y alquiler de mobiliario suben precios un 9% para la próxima temporada',      meta: 'Hace 5 días · Asociaciones del sector',  impacto: 'medio' },
+      { cat: 'Clientes',     color: '#3b6fd4',    title: 'El 62% de las parejas contrata proveedores a través de Instagram y WhatsApp',           meta: 'Hace 6 días · Encuesta sectorial',       impacto: 'medio' }
     ]
   }
 };
